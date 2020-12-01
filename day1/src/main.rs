@@ -1,6 +1,7 @@
-use std::fs::File;
-use std::io::{self, BufRead};
 use std::path::Path;
+use itertools::Itertools;
+use std::fs;
+
 
 fn main() {
     part1();
@@ -8,70 +9,41 @@ fn main() {
 
 }
 
-// The output is wrapped in a Result to allow matching on errors
-// Returns an Iterator to the Reader of the lines of the file.
-fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
+fn read_file_to_int_vec<P>(filename: P) -> Vec<isize>
 where P: AsRef<Path>, {
-    let file = File::open(filename)?;
-    Ok(io::BufReader::new(file).lines())
+    let contents = fs::read_to_string(filename)
+        .expect("Something went wrong reading the file");
+    let lines = contents.lines();
+    let values: Vec<isize> = lines.map(|s| s.parse::<isize>().unwrap()).collect();
+
+    values
+
 }
 
 fn part1() {
-
-    if let Ok(lines1) = read_lines("./data") {
-        for line1 in lines1 {
-            if let Ok(number1) = line1 {
-                if let Ok(lines2) = read_lines("./data") {
-                    for line2 in lines2 {
-                        if let Ok(number2) = line2 {
-                            let int1: i32 = number1.parse().unwrap();
-                            let int2: i32 = number2.parse().unwrap();
-                            if  int1 + int2 == 2020 {
-                                println!("{} + {} = 2020", number1, number2);
-                                println!("{} * {} = {}", number1, number2, int1 * int2);
-                                return ()
-                            }
-                        }
-                    }
-                }
-
-            }
+    let lines = read_file_to_int_vec("./data");
+    let couples = lines.into_iter().permutations(2);
+    for couple in couples {
+        let sum: isize = couple.iter().sum();
+        if  sum == 2020 {
+            println!("la somme de {:?} vaut 2020", couple);
+            let product: isize = couple.iter().product();
+            println!("Product = {}", product);
+            return ()
         }
     }
-
 }
 
 fn part2() {
-
-    if let Ok(lines1) = read_lines("./data") {
-        for line1 in lines1 {
-            if let Ok(number1) = line1 {
-                if let Ok(lines2) = read_lines("./data") {
-                    for line2 in lines2 {
-                        if let Ok(number2) = line2 {
-
-                            if let Ok(lines3) = read_lines("./data") {
-                                for line3 in lines3 {
-                                    if let Ok(number3) = line3 {
-
-
-                                        let int1: i32 = number1.parse().unwrap();
-                                        let int2: i32 = number2.parse().unwrap();
-                                        let int3: i32 = number3.parse().unwrap();
-                                        if  int1 + int2 + int3 == 2020 {
-                                            println!("{} + {} + {} = 2020", number1, number2, number3);
-                                            println!("{} * {} * {} = {}", number1, number2, number3, int1 * int2 * int3);
-                                            return ()
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-            }
+    let lines = read_file_to_int_vec("./data");
+    let trios = lines.into_iter().permutations(3);
+    for trio in trios {
+        let sum: isize = trio.iter().sum();
+        if  sum == 2020 {
+            println!("la somme de {:?} vaut 2020", trio);
+            let product: isize = trio.iter().product();
+            println!("Product = {}", product);
+            return ()
         }
     }
-
 }
