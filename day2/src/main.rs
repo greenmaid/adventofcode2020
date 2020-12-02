@@ -3,8 +3,10 @@ use std::fs;
 use regex::{Regex, Captures};
 
 fn main() {
-    part1();
-    part2("./data");
+    let lines = read_file_to_lines("./data");
+    part1(lines);
+    let lines = read_file_to_lines("./data");
+    part2(lines);
 
 }
 
@@ -33,11 +35,9 @@ fn parse_line(line: &str) -> Captures {
         $
         ").unwrap();
     re.captures(line).unwrap()
-
 }
 
-fn part1() {
-    let lines = read_file_to_lines("./data");
+fn part1(lines: Vec<String>) -> usize {
 
     let mut counter: usize = 0;
     for line in lines {
@@ -48,18 +48,18 @@ fn part1() {
         let max: usize = caps["max"].parse().unwrap();
 
         if matches >= min && matches <= max {
-            println!("Success");
+            // println!("Success");
             counter = counter + 1;
         } else {
-            println!("Failure");
+            // println!("Failure");
         }
 
     }
-    println!("Result : {}", counter);
+    println!("Result part1: {}", counter);
+    counter
 }
 
-fn part2(filename: &str) -> usize {
-    let lines = read_file_to_lines(filename);
+fn part2(lines: Vec<String>) -> usize {
 
     let mut counter: usize = 0;
     for line in lines {
@@ -71,14 +71,14 @@ fn part2(filename: &str) -> usize {
         let position2: usize = caps["max"].parse().unwrap();
 
         if (&value.chars().nth(position1 - 1).unwrap() == c) ^ (&value.chars().nth(position2 - 1).unwrap() == c) {
-            println!("Success");
+            // println!("Success");
             counter = counter + 1;
         } else {
-            println!("Failure");
+            // println!("Failure");
         }
 
     }
-    println!("Result : {}", counter);
+    println!("Result part2: {}", counter);
     counter
 }
 
@@ -115,9 +115,7 @@ mod tests {
 
     #[test]
     fn test_part2() {
-        assert_eq!(part2("datatest"), 1);
-
-
+        let lines = read_file_to_lines("./datatest");
+        assert_eq!(part2(lines), 1);
     }
-
 }
