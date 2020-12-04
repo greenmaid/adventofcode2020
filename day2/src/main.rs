@@ -23,7 +23,7 @@ where P: AsRef<Path>, {
 }
 
 fn parse_line(line: &str) -> Captures {
-    let re = Regex::new(r"(?x)
+    let re = Regex::new(r"
         ^
         (?P<min>\d+)
         -

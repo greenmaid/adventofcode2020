@@ -1,5 +1,6 @@
-use std::path::Path;
 use std::fs;
+use std::path::Path;
+
 
 fn main() {
     let lines = read_file_to_lines("./data");
