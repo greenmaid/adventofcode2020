@@ -74,8 +74,6 @@ fn get_cmd_list_with_nth_item_mutated(lines: Vec<String>, n: usize) -> Vec<Instr
 
 }
 
-
-
 enum Command {
     Nop,
     Acc,
